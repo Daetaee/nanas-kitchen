@@ -5,223 +5,401 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Nana's Kitchen ♡</title>
+
 <style>
-body{margin:0;background:#fff5fa;color:#65445b;font-family:Arial,sans-serif}
-header{text-align:center;padding:30px 12px;background:#f5dce9}
-h1{font-family:Georgia,serif;color:#a2527f}
-main{max-width:800px;margin:auto;padding:16px}
-nav{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}
-button{cursor:pointer;border:1px solid #dcb2cc;border-radius:12px;padding:10px;background:#fff;color:#94577d}
-button.active,.choose.selected,#send{background:#a2527f;color:white}
-#menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
-.card{background:white;border:1px solid #f0d5e4;border-radius:16px;padding:12px;overflow:hidden}
-.photo{font-size:42px;text-align:center;background:#f9e8f1;border-radius:12px;padding:14px}
-img.photo{width:100%;height:150px;object-fit:cover;padding:0;display:block;border-radius:12px}
-.name{font-weight:bold;margin:10px 0}
-.price{font-size:13px;color:#a2527f;margin-bottom:10px}
-.choose{width:100%}
-#order{background:white;border-radius:16px;padding:16px;margin-top:20px}
-#send{width:100%;margin-top:12px}
+body {
+  margin: 0;
+  background: #fff5fa;
+  color: #65445b;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  text-align: center;
+  padding: 30px 12px;
+  background: #f5dce9;
+}
+
+h1 {
+  font-family: Georgia, serif;
+  color: #a2527f;
+}
+
+main {
+  max-width: 800px;
+  margin: auto;
+  padding: 16px;
+}
+
+nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 15px 0;
+}
+
+button {
+  cursor: pointer;
+  border: 1px solid #dcb2cc;
+  border-radius: 12px;
+  padding: 10px;
+  background: #fff;
+  color: #94577d;
+}
+
+button.active,
+.choose.selected,
+#send {
+  background: #a2527f;
+  color: white;
+}
+
+button:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+#menu {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  gap: 12px;
+}
+
+.card {
+  background: white;
+  border: 1px solid #f0d5e4;
+  border-radius: 16px;
+  padding: 12px;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.photo {
+  font-size: 42px;
+  text-align: center;
+  background: #f9e8f1;
+  border-radius: 12px;
+  padding: 14px;
+}
+
+img.photo {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  padding: 0;
+  display: block;
+  border-radius: 12px;
+}
+
+.name {
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.price {
+  font-size: 13px;
+  color: #a2527f;
+  margin-bottom: 10px;
+}
+
+.choose {
+  width: 100%;
+}
+
+#order {
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  margin-top: 20px;
+  overflow-wrap: anywhere;
+}
+
+#send {
+  width: 100%;
+  margin-top: 12px;
+}
+
+#message {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 380px) {
+  #menu {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .card {
+    padding: 8px;
+  }
+
+  img.photo {
+    height: 120px;
+  }
+}
 </style>
 </head>
+
 <body>
 <header>
-<h1>♡ Nana’s Kitchen ♡</h1>
-<strong>A menu for my favorite husband</strong>
-<p><i>Choose your meal, darling. Payment is due tonight ♡</i></p>
+  <h1>♡ Nana’s Kitchen ♡</h1>
+  <strong>A menu for my favorite husband</strong>
+  <p><i>Choose your meal, darling. Payment is due tonight ♡</i></p>
 </header>
+
 <main>
-<nav id="filters"></nav>
-<h2 id="heading">All the good stuff ♡</h2>
-<section id="menu"></section>
-<section id="order">
-<h2>♡ Your order for tomorrow</h2>
-<div id="items">Choose your favorite dishes above!</div>
-<button id="send">Send to Wife ❤️</button>
-<p id="message"></p>
-</section>
+  <nav id="filters"></nav>
+
+  <h2 id="heading">All the good stuff ♡</h2>
+
+  <section id="menu"></section>
+
+  <section id="order">
+    <h2>♡ Your order for tomorrow</h2>
+    <div id="items">Choose your favorite dishes above!</div>
+    <button id="send">Send to Wife ❤️</button>
+    <p id="message" role="status" aria-live="polite"></p>
+  </section>
 </main>
+
 <script>
-const dishes=[
-["Japanese Chicken Curry","Asian Favorites","🍛","2 kisses 💋"],
-["Ramen","Asian Favorites","🍜","1 big hug 🤗"],
-["Fried Rice","Asian Favorites","🍚","1 kiss 💋"],
-["Stir-Fried Noodles","Asian Favorites","🥢","2 kisses 💋💋"],
-["Hot Pot","Asian Favorites","🍲","Cook together ❤️"],
-["Lagman","Asian Favorites","🍜","3 kisses 💋💋💋"],
-["Braised Chicken with Potatoes","Chicken & Meat","🍗","2 kisses 💋💋"],
-["Chicken with Mushrooms","Chicken & Meat","🍄","1 big hug 🤗"],
-["Beef with Bell Peppers","Chicken & Meat","🥩","3 kisses 💋💋💋"],
-["Homemade Cutlets","Chicken & Meat","🍖","2 kisses 💋💋"],
-["Cola-Glazed Chicken Wings","Chicken & Meat","🍗","Kiss on the forehead 💗"],
-["KFC-Style Chicken Wings","Chicken & Meat","🍗","3 kisses 💋💋💋"],
-["Chicken Nuggets","Chicken & Meat","🍗","1 kiss 💋"],
-["Burgers","Chicken & Meat","🍔","2 kisses 💋💋"],
-["Belyash (Fried Meat Pie)","Chicken & Meat","🥟","1 big hug 🤗"],
-["Chicken with Pineapple","Chicken & Meat","🍍🍗","2 kisses 💋💋"],
-["Pan-Fried Fish Fillet","Seafood & Dumplings","🐟","2 kisses 💋💋"],
-["Chicken Dumplings","Seafood & Dumplings","🥟","1 kiss 💋"],
-["Shrimp Dumplings","Seafood & Dumplings","🥟","3 kisses 💋💋💋"],
-["Borscht","Soups","🍲","Kiss on the forehead 💗"],
-["Egg Drop Soup","Soups","🥣","1 warm hug 🤗"],
-["Salad","Vegetables & Salads","🥗","1 kiss 💋"],
-["Fried Eggplant","Vegetables & Salads","🍆","1 big hug 🤗"],
-["Eggs with Soy Sauce","Vegetables & Salads","🥚","Kiss on the forehead 💗"],
-["Eggs with Bell Peppers","Vegetables & Salads","🍳","1 kiss 💋"],
-["Steamed Eggs","Vegetables & Salads","🍮","1 warm hug 🤗"],
-["Stir-Fried Cabbage","Vegetables & Salads","🥬","1 kiss 💋"],
-["Stir-Fried Green Beans","Vegetables & Salads","🫛","2 kisses 💋💋"],
-["Korean-Style Carrot Salad","Vegetables & Salads","🥕","1 kiss 💋"],
-["Steamed Rice","Sides & Bread","🍚","Free with love ♡"],
-["Bread","Sides & Bread","🍞","Free with love ♡"]
+const dishes = [
+  ["Japanese Chicken Curry", "Asian Favorites", "🍛", "2 kisses 💋"],
+  ["Ramen", "Asian Favorites", "🍜", "1 big hug 🤗"],
+  ["Fried Rice", "Asian Favorites", "🍚", "1 kiss 💋"],
+  ["Stir-Fried Noodles", "Asian Favorites", "🥢", "2 kisses 💋💋"],
+  ["Hot Pot", "Asian Favorites", "🍲", "Cook together ❤️"],
+  ["Lagman", "Asian Favorites", "🍜", "3 kisses 💋💋💋"],
+
+  ["Braised Chicken with Potatoes", "Chicken & Meat", "🍗", "2 kisses 💋💋"],
+  ["Chicken with Mushrooms", "Chicken & Meat", "🍄", "1 big hug 🤗"],
+  ["Beef with Bell Peppers", "Chicken & Meat", "🥩", "3 kisses 💋💋💋"],
+  ["Homemade Cutlets", "Chicken & Meat", "🍖", "2 kisses 💋💋"],
+  ["Cola-Glazed Chicken Wings", "Chicken & Meat", "🍗", "Kiss on the forehead 💗"],
+  ["KFC-Style Chicken Wings", "Chicken & Meat", "🍗", "3 kisses 💋💋💋"],
+  ["Chicken Nuggets", "Chicken & Meat", "🍗", "1 kiss 💋"],
+  ["Burgers", "Chicken & Meat", "🍔", "2 kisses 💋💋"],
+  ["Belyash (Fried Meat Pie)", "Chicken & Meat", "🥟", "1 big hug 🤗"],
+  ["Chicken with Pineapple", "Chicken & Meat", "🍍🍗", "2 kisses 💋💋"],
+
+  ["Pan-Fried Fish Fillet", "Seafood & Dumplings", "🐟", "2 kisses 💋💋"],
+  ["Chicken Dumplings", "Seafood & Dumplings", "🥟", "1 kiss 💋"],
+  ["Shrimp Dumplings", "Seafood & Dumplings", "🥟", "3 kisses 💋💋💋"],
+
+  ["Borscht", "Soups", "🍲", "Kiss on the forehead 💗"],
+  ["Egg Drop Soup", "Soups", "🥣", "1 warm hug 🤗"],
+
+  ["Salad", "Vegetables & Salads", "🥗", "1 kiss 💋"],
+  ["Fried Eggplant", "Vegetables & Salads", "🍆", "1 big hug 🤗"],
+  ["Eggs with Soy Sauce", "Vegetables & Salads", "🥚", "Kiss on the forehead 💗"],
+  ["Eggs with Bell Peppers", "Vegetables & Salads", "🍳", "1 kiss 💋"],
+  ["Steamed Eggs", "Vegetables & Salads", "🍮", "1 warm hug 🤗"],
+  ["Stir-Fried Cabbage", "Vegetables & Salads", "🥬", "1 kiss 💋"],
+  ["Stir-Fried Green Beans", "Vegetables & Salads", "🫛", "2 kisses 💋💋"],
+  ["Korean-Style Carrot Salad", "Vegetables & Salads", "🥕", "1 kiss 💋"],
+
+  ["Steamed Rice", "Sides & Bread", "🍚", "Free with love ♡"],
+  ["Bread", "Sides & Bread", "🍞", "Free with love ♡"]
 ];
 
-const photoFiles={
-"Japanese Chicken Curry":"Japanese-katsu-curry.webp",
-"Hot Pot":"Hot-Pot.jfif",
-"Fried Rice":"Fried-Rice.jfif",
-"Stir-Fried Noodles":"Stir-Fried-Noodles.jfif",
-"Ramen":"Ramen.jfif",
-"Lagman":"Lagman.jpg",
-"Braised Chicken with Potatoes":"Braised-Chicken-Potatoes.jpg",
-"Chicken with Mushrooms":"Chicken-with-Mushrooms.jpg",
-"Beef with Bell Peppers":"Beef-with-Black-Pepper.jpg",
-"Homemade Cutlets":"Homemade-Cutlets.jfif",
-"Cola-Glazed Chicken Wings":"Cola-Glazed-Chicken-Wings.jpg",
-"KFC-Style Chicken Wings":"KFC-Style-Chicken-Wings.jpg",
-"Chicken Nuggets":"Chicken-Nuggets.jpg",
-"Burgers":"Burgers.jpg",
-"Belyash (Fried Meat Pie)":"Belyash.jpg",
-"Chicken with Pineapple":"Chicken-with-Pineapple.jfif",
-"Pan-Fried Fish Fillet":"Pan-Fried-Fish-Fillet.jfif",
-"Chicken Dumplings":"Chicken-Dumplings.jfif",
-"Shrimp Dumplings":"Shrimp-Dumplings.jfif",
-"Borscht":"Borscht.jfif",
-"Egg Drop Soup":"Egg-Drop-Soup.jfif",
-"Salad":"Salad.jfif",
-"Fried Eggplant":"Fried-Eggplant.jfif",
-"Eggs with Soy Sauce":"Eggs-with-Soy-Sauce.jfif",
-"Eggs with Bell Peppers":"Eggs-with-Bell-Peppers.jfif",
-"Steamed Eggs":"Steamed-Eggs.jfif",
-"Stir-Fried Cabbage":"Stir-Fried-Cabbage.jfif",
-"Stir-Fried Green Beans":"Stir-Fried-Green-Beans.jfif",
-"Korean-Style Carrot Salad":"Korean-Style-Carrot-Salad.jfif",
-"Steamed Rice":"Steamed-Rice.jfif"
+const photoFiles = {
+  "Japanese Chicken Curry": "Japanese-katsu-curry.webp",
+  "Hot Pot": "Hot-Pot.jfif",
+  "Fried Rice": "Fried-Rice.jfif",
+  "Stir-Fried Noodles": "Stir-Fried-Noodles.jfif",
+  "Ramen": "Ramen.jfif",
+  "Lagman": "Lagman.jpg",
+  "Braised Chicken with Potatoes": "Braised-Chicken-Potatoes.jpg",
+  "Chicken with Mushrooms": "Chicken-with-Mushrooms.jpg",
+  "Beef with Bell Peppers": "Beef-with-Black-Pepper.jpg",
+  "Homemade Cutlets": "Homemade-Cutlets.jfif",
+  "Cola-Glazed Chicken Wings": "Cola-Glazed-Chicken-Wings.jpg",
+  "KFC-Style Chicken Wings": "KFC-Style-Chicken-Wings.jpg",
+  "Chicken Nuggets": "Chicken-Nuggets.jpg",
+  "Burgers": "Burgers.jpg",
+  "Belyash (Fried Meat Pie)": "Belyash.jpg",
+  "Chicken with Pineapple": "Chicken-with-Pineapple.jfif",
+  "Pan-Fried Fish Fillet": "Pan-Fried-Fish-Fillet.jfif",
+  "Chicken Dumplings": "Chicken-Dumplings.jfif",
+  "Shrimp Dumplings": "Shrimp-Dumplings.jfif",
+  "Borscht": "Borscht.jfif",
+  "Egg Drop Soup": "Egg-Drop-Soup.jfif",
+  "Salad": "Salad.jfif",
+  "Fried Eggplant": "Fried-Eggplant.jfif",
+  "Eggs with Soy Sauce": "Eggs-with-Soy-Sauce.jfif",
+  "Eggs with Bell Peppers": "Eggs-with-Bell-Peppers.jfif",
+  "Steamed Eggs": "Steamed-Eggs.jfif",
+  "Stir-Fried Cabbage": "Stir-Fried-Cabbage.jfif",
+  "Stir-Fried Green Beans": "Stir-Fried-Green-Beans.jfif",
+  "Korean-Style Carrot Salad": "Korean-Style-Carrot-Salad.jfif",
+  "Steamed Rice": "Steamed-Rice.jfif"
 };
 
-let category="All dishes ♡";
-const selected=new Set();
-const categories=["All dishes ♡",...new Set(dishes.map(d=>d[1]))];
-const filters=document.querySelector("#filters");
-const menu=document.querySelector("#menu");
+let category = "All dishes ♡";
+const selected = new Set();
 
-function render(){
-filters.innerHTML="";
-categories.forEach(c=>{
-const button=document.createElement("button");
-button.textContent=c;
-button.className=c===category?"active":"";
-button.onclick=()=>{category=c;render()};
-filters.append(button);
-});
+const categories = [
+  "All dishes ♡",
+  ...new Set(dishes.map(dish => dish[1]))
+];
 
-document.querySelector("#heading").textContent=category;
-menu.innerHTML="";
+const filters = document.querySelector("#filters");
+const menu = document.querySelector("#menu");
+const items = document.querySelector("#items");
+const message = document.querySelector("#message");
+const sendButton = document.querySelector("#send");
 
-dishes.filter(d=>category==="All dishes ♡"||d[1]===category).forEach(d=>{
-const card=document.createElement("article");
-card.className="card";
+function render() {
+  filters.innerHTML = "";
 
-let photo;
-if(photoFiles[d[0]]){
-photo=document.createElement("img");
-photo.src="./"+photoFiles[d[0]];
-photo.alt=d[0];
-photo.className="photo";
-photo.onerror=function(){
-const fallback=document.createElement("div");
-fallback.className="photo";
-fallback.textContent=d[2];
-this.replaceWith(fallback);
-};
-}else{
-photo=document.createElement("div");
-photo.className="photo";
-photo.textContent=d[2];
+  categories.forEach(c => {
+    const filterButton = document.createElement("button");
+    filterButton.textContent = c;
+    filterButton.className = c === category ? "active" : "";
+
+    filterButton.onclick = () => {
+      category = c;
+      render();
+    };
+
+    filters.append(filterButton);
+  });
+
+  document.querySelector("#heading").textContent = category;
+  menu.innerHTML = "";
+
+  const visibleDishes = dishes.filter(dish =>
+    category === "All dishes ♡" || dish[1] === category
+  );
+
+  visibleDishes.forEach(dish => {
+    const [nameText, dishCategory, emoji, priceText] = dish;
+
+    const card = document.createElement("article");
+    card.className = "card";
+
+    let photo;
+
+    if (photoFiles[nameText]) {
+      photo = document.createElement("img");
+      photo.src = "./" + photoFiles[nameText];
+      photo.alt = nameText;
+      photo.className = "photo";
+      photo.loading = "lazy";
+
+      photo.onerror = function() {
+        const fallback = document.createElement("div");
+        fallback.className = "photo";
+        fallback.textContent = emoji;
+        fallback.setAttribute("role", "img");
+        fallback.setAttribute("aria-label", nameText);
+        this.replaceWith(fallback);
+      };
+    } else {
+      photo = document.createElement("div");
+      photo.className = "photo";
+      photo.textContent = emoji;
+      photo.setAttribute("role", "img");
+      photo.setAttribute("aria-label", nameText);
+    }
+
+    const name = document.createElement("div");
+    name.className = "name";
+    name.textContent = nameText;
+
+    const price = document.createElement("div");
+    price.className = "price";
+    price.textContent = "Price: " + priceText;
+
+    const chooseButton = document.createElement("button");
+    chooseButton.className =
+      "choose" + (selected.has(nameText) ? " selected" : "");
+
+    chooseButton.textContent = selected.has(nameText)
+      ? "✓ Selected ♡"
+      : "Choose ♡";
+
+    chooseButton.setAttribute("aria-pressed", selected.has(nameText));
+
+    chooseButton.onclick = () => {
+      if (selected.has(nameText)) {
+        selected.delete(nameText);
+      } else {
+        selected.add(nameText);
+      }
+
+      message.textContent = "";
+      render();
+    };
+
+    card.append(photo, name, price, chooseButton);
+    menu.append(card);
+  });
+
+  items.innerHTML = "";
+
+  if (selected.size === 0) {
+    items.textContent = "Choose your favorite dishes above!";
+  } else {
+    selected.forEach(name => {
+      const p = document.createElement("p");
+      p.textContent = "♡ " + name;
+      items.append(p);
+    });
+
+    const total = document.createElement("b");
+    total.textContent = "Total dishes: " + selected.size;
+    items.append(total);
+  }
 }
 
-const name=document.createElement("div");
-name.className="name";
-name.textContent=d[0];
+sendButton.onclick = async () => {
+  if (selected.size === 0) {
+    message.textContent = "Choose at least one dish first, darling ♡";
+    return;
+  }
 
-const price=document.createElement("div");
-price.className="price";
-price.textContent="Price: "+d[3];
+  sendButton.disabled = true;
+  sendButton.textContent = "Sending your order... ♡";
+  message.textContent = "";
 
-const button=document.createElement("button");
-button.className="choose"+(selected.has(d[0])?" selected":"");
-button.textContent=selected.has(d[0])?"✓ Selected ♡":"Choose ♡";
-button.onclick=()=>{
-selected.has(d[0])?selected.delete(d[0]):selected.add(d[0]);
-render();
-};
+  try {
+    const response = await fetch(
+      "https://nanas-kitchen-orders.daetaee4.workers.dev/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          items: [...selected]
+        })
+      }
+    );
 
-card.append(photo,name,price,button);
-menu.append(card);
-});
+    const result = await response.json();
 
-const items=document.querySelector("#items");
-items.innerHTML="";
-if(!selected.size){
-items.textContent="Choose your favorite dishes above!";
-}else{
-selected.forEach(n=>{
-const p=document.createElement("p");
-p.textContent="♡ "+n;
-items.append(p);
-});
-const total=document.createElement("b");
-total.textContent="Total dishes: "+selected.size;
-items.append(total);
-}
-}
+    if (!response.ok || !result.ok) {
+      throw new Error("Order delivery failed");
+    }
 
-document.querySelector("#send").onclick=async()=>{
-const message=document.querySelector("#message");
-const button=document.querySelector("#send");
+    message.textContent =
+      "Order sent successfully! ❤️ See you at dinner, darling! ♡";
 
-if(!selected.size){
-message.textContent="Choose at least one dish first, darling ♡";
-return;
-}
+    selected.clear();
+    render();
 
-button.disabled=true;
-button.textContent="Sending your order... ♡";
+  } catch (error) {
+    message.textContent =
+      "Oops! The order could not be sent. Please try again, darling ♡";
 
-try{
-const response=await fetch(
-"https://nanas-kitchen-orders.daetaee4.workers.dev/",
-{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({items:[...selected]})
-}
-);
-const result=await response.json();
-if(!response.ok||!result.ok)throw new Error("Order delivery failed");
-
-message.textContent="Order sent successfully! ❤️ See you at dinner, darling! ♡";
-selected.clear();
-render();
-}catch(error){
-message.textContent="Oops! The order could not be sent. Please try again, darling ♡";
-} finally {
-  button.disabled = false;
-  button.textContent = "Send to Wife ❤️";
-}
+  } finally {
+    sendButton.disabled = false;
+    sendButton.textContent = "Send to Wife ❤️";
+  }
 };
 
 render();
 </script>
 </body>
 </html>
+```
