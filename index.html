@@ -96,11 +96,48 @@ let items=document.querySelector("#items");items.innerHTML="";
 if(!selected.size)items.textContent="Choose your favorite dishes above!";
 else{selected.forEach(n=>{let p=document.createElement("p");p.textContent="♡ "+n;items.append(p)});let total=document.createElement("b");total.textContent="Total dishes: "+selected.size;items.append(total)}
 }
-document.querySelector("#send").onclick=()=>{
-document.querySelector("#message").textContent=selected.size?
-"Order preview ready ♡\n"+[...selected].join(", ")+"\n\nTelegram connection will be added next!":
-"Choose at least one dish first, darling ♡";
+
+document.querySelector("#send").onclick = async () => {
+  const message = document.querySelector("#message");
+  const button = document.querySelector("#send");
+
+  if (!selected.size) {
+    message.textContent = "Choose at least one dish first, darling ♡";
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Sending your order... ♡";
+
+  try {
+    const response = await fetch(
+      "https://nanas-kitchen-orders.daetaee4.workers.dev/",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: [...selected] })
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok || !result.ok) {
+      throw new Error("Order delivery failed");
+    }
+
+    message.textContent =
+      "Order sent successfully! ❤️ See you at dinner, darling! ♡";
+    selected.clear();
+    render();
+  } catch (error) {
+    message.textContent =
+      "Oops! The order could not be sent. Please try again, darling ♡";
+  } finally {
+    button.disabled = false;
+    button.textContent = "Send to Wife ❤️";
+  }
 };
+  
 render();
 </script>
 </body>
