@@ -7,6 +7,10 @@
 <title>Nana's Kitchen ♡</title>
 
 <style>
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   background: #fff5fa;
@@ -16,13 +20,25 @@ body {
 
 header {
   text-align: center;
-  padding: 30px 12px;
-  background: #f5dce9;
+  padding: 45px 12px;
+  background-image:
+    linear-gradient(rgba(40, 20, 30, 0.35), rgba(40, 20, 30, 0.35)),
+    url("./%D0%BA%D0%BE%D1%82.jfif");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
 }
 
 h1 {
   font-family: Georgia, serif;
-  color: #a2527f;
+  color: white;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+header p,
+header strong {
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8);
 }
 
 main {
@@ -198,6 +214,7 @@ const dishes = [
   ["Korean-Style Carrot Salad", "Vegetables & Salads", "🥕", "1 kiss 💋"],
 
   ["Steamed Rice", "Sides & Bread", "🍚", "Free with love ♡"],
+  ["Bread", "Sides & Bread", "🍞", "Free with love ♡"]
 ];
 
 const photoFiles = {
@@ -266,73 +283,74 @@ function render() {
   document.querySelector("#heading").textContent = category;
   menu.innerHTML = "";
 
-  const visibleDishes = dishes.filter(dish =>
-    category === "All dishes ♡" || dish[1] === category
-  );
+  dishes
+    .filter(dish => category === "All dishes ♡" || dish[1] === category)
+    .forEach(dish => {
+      const [nameText, dishCategory, emoji, priceText] = dish;
 
-  visibleDishes.forEach(dish => {
-    const [nameText, dishCategory, emoji, priceText] = dish;
+      const card = document.createElement("article");
+      card.className = "card";
 
-    const card = document.createElement("article");
-    card.className = "card";
+      let photo;
 
-    let photo;
+      if (photoFiles[nameText]) {
+        photo = document.createElement("img");
+        photo.src = "./" + photoFiles[nameText];
+        photo.alt = nameText;
+        photo.className = "photo";
+        photo.loading = "lazy";
 
-    if (photoFiles[nameText]) {
-      photo = document.createElement("img");
-      photo.src = "./" + photoFiles[nameText];
-      photo.alt = nameText;
-      photo.className = "photo";
-      photo.loading = "lazy";
-
-      photo.onerror = function() {
-        const fallback = document.createElement("div");
-        fallback.className = "photo";
-        fallback.textContent = emoji;
-        fallback.setAttribute("role", "img");
-        fallback.setAttribute("aria-label", nameText);
-        this.replaceWith(fallback);
-      };
-    } else {
-      photo = document.createElement("div");
-      photo.className = "photo";
-      photo.textContent = emoji;
-      photo.setAttribute("role", "img");
-      photo.setAttribute("aria-label", nameText);
-    }
-
-    const name = document.createElement("div");
-    name.className = "name";
-    name.textContent = nameText;
-
-    const price = document.createElement("div");
-    price.className = "price";
-    price.textContent = "Price: " + priceText;
-
-    const chooseButton = document.createElement("button");
-    chooseButton.className =
-      "choose" + (selected.has(nameText) ? " selected" : "");
-
-    chooseButton.textContent = selected.has(nameText)
-      ? "✓ Selected ♡"
-      : "Choose ♡";
-
-    chooseButton.setAttribute("aria-pressed", selected.has(nameText));
-
-    chooseButton.onclick = () => {
-      if (selected.has(nameText)) {
-        selected.delete(nameText);
+        photo.onerror = function() {
+          const fallback = document.createElement("div");
+          fallback.className = "photo";
+          fallback.textContent = emoji;
+          fallback.setAttribute("role", "img");
+          fallback.setAttribute("aria-label", nameText);
+          this.replaceWith(fallback);
+        };
       } else {
-        selected.add(nameText);
+        photo = document.createElement("div");
+        photo.className = "photo";
+        photo.textContent = emoji;
+        photo.setAttribute("role", "img");
+        photo.setAttribute("aria-label", nameText);
       }
 
-      message.textContent = "";
-      render();
-    };
+      const name = document.createElement("div");
+      name.className = "name";
+      name.textContent = nameText;
 
-    card.append(photo, name, price, chooseButton);
-    menu.append(card);
-  });
+      const price = document.createElement("div");
+      price.className = "price";
+      price.textContent = "Price: " + priceText;
+
+      const chooseButton = document.createElement("button");
+      chooseButton.className =
+        "choose" + (selected.has(nameText) ? " selected" : "");
+
+      chooseButton.textContent = selected.has(nameText)
+        ? "✓ Selected ♡"
+        : "Choose ♡";
+
+      chooseButton.setAttribute(
+        "aria-pressed",
+        selected.has(nameText) ? "true" : "false"
+      );
+
+      chooseButton.onclick = () => {
+        if (selected.has(nameText)) {
+          selected.delete(nameText);
+        } else {
+          selected.add(nameText);
+        }
+
+        message.textContent = "";
+        render();
+      };
+
+      card.append(photo, name, price, chooseButton);
+      menu.append(card);
+    });
 
   items.innerHTML = "";
 
