@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nana's Kitchen ♡</title>
+<style>
+body{margin:0;background:#fff5fa;color:#65445b;font-family:Arial,sans-serif}
+header{text-align:center;padding:30px 12px;background:#f5dce9}
+h1{font-family:Georgia,serif;color:#a2527f}
+main{max-width:800px;margin:auto;padding:16px}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}
+button{cursor:pointer;border:1px solid #dcb2cc;border-radius:12px;padding:10px;background:#fff;color:#94577d}
+button.active,.choose.selected,#send{background:#a2527f;color:white}
+#menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
+.card{background:white;border:1px solid #f0d5e4;border-radius:16px;padding:12px}
+.photo{font-size:42px;text-align:center;background:#f9e8f1;border-radius:12px;padding:14px}
+.name{font-weight:bold;margin:10px 0}
+.price{font-size:13px;color:#a2527f;margin-bottom:10px}
+.choose{width:100%}
+#order{background:white;border-radius:16px;padding:16px;margin-top:20px}
+#send{width:100%;margin-top:12px}
+</style>
+</head>
+<body>
+<header>
+<h1>♡ Nana’s Kitchen ♡</h1>
+<strong>A menu for my favorite husband</strong>
+<p><i>Choose your meal, darling. Payment is due tonight ♡</i></p>
+</header>
+<main>
+<nav id="filters"></nav>
+<h2 id="heading">All the good stuff ♡</h2>
+<section id="menu"></section>
+<section id="order">
+<h2>♡ Your order for tomorrow</h2>
+<div id="items">Choose your favorite dishes above!</div>
+<button id="send">Send to Wife ❤️</button>
+<p id="message"></p>
+</section>
+</main>
+<script>
+const dishes=[
+["Japanese Chicken Curry","Asian Favorites","🍛","2 kisses 💋"],
+["Ramen","Asian Favorites","🍜","1 big hug 🤗"],
+["Fried Rice","Asian Favorites","🍚","1 kiss 💋"],
+["Stir-Fried Noodles","Asian Favorites","🥢","2 kisses 💋💋"],
+["Hot Pot","Asian Favorites","🍲","Cook together ❤️"],
+["Lagman","Asian Favorites","🍜","3 kisses 💋💋💋"],
+["Braised Chicken with Potatoes","Chicken & Meat","🍗","2 kisses 💋💋"],
+["Chicken with Mushrooms","Chicken & Meat","🍄","1 big hug 🤗"],
+["Beef with Bell Peppers","Chicken & Meat","🥩","3 kisses 💋💋💋"],
+["Homemade Cutlets","Chicken & Meat","🍖","2 kisses 💋💋"],
+["Cola-Glazed Chicken Wings","Chicken & Meat","🍗","Kiss on the forehead 💗"],
+["KFC-Style Chicken Wings","Chicken & Meat","🍗","3 kisses 💋💋💋"],
+["Chicken Nuggets","Chicken & Meat","🍗","1 kiss 💋"],
+["Burgers","Chicken & Meat","🍔","2 kisses 💋💋"],
+["Belyash (Fried Meat Pie)","Chicken & Meat","🥟","1 big hug 🤗"],
+["Pan-Fried Fish Fillet","Seafood & Dumplings","🐟","2 kisses 💋💋"],
+["Chicken Dumplings","Seafood & Dumplings","🥟","1 kiss 💋"],
+["Shrimp Dumplings","Seafood & Dumplings","🥟","3 kisses 💋💋💋"],
+["Borscht","Soups","🍲","Kiss on the forehead 💗"],
+["Egg Drop Soup","Soups","🥣","1 warm hug 🤗"],
+["Homemade Meat & Potato Pasta Soup","Soups","🥣","2 kisses 💋💋"],
+["Salad","Vegetables & Salads","🥗","1 kiss 💋"],
+["Fried Eggplant","Vegetables & Salads","🍆","1 big hug 🤗"],
+["Eggs with Soy Sauce","Vegetables & Salads","🥚","Kiss on the forehead 💗"],
+["Eggs with Bell Peppers","Vegetables & Salads","🍳","1 kiss 💋"],
+["Steamed Eggs","Vegetables & Salads","🍮","1 warm hug 🤗"],
+["Stir-Fried Cabbage","Vegetables & Salads","🥬","1 kiss 💋"],
+["Stir-Fried Green Beans","Vegetables & Salads","🫛","2 kisses 💋💋"],
+["Korean-Style Carrot Salad","Vegetables & Salads","🥕","1 kiss 💋"],
+["Steamed Rice","Sides & Bread","🍚","Free with love ♡"],
+["Bread","Sides & Bread","🍞","Free with love ♡"],
+["Pasta (Nana’s homemade style)","Homemade Specials","🍲","Kiss + hug combo 🥰"]
+];
+let category="All dishes ♡",selected=new Set();
+const categories=["All dishes ♡",...new Set(dishes.map(d=>d[1]))];
+const filters=document.querySelector("#filters"),menu=document.querySelector("#menu");
+function render(){
+filters.innerHTML="";
+categories.forEach(c=>{let b=document.createElement("button");b.textContent=c;b.className=c===category?"active":"";b.onclick=()=>{category=c;render()};filters.append(b)});
+document.querySelector("#heading").textContent=category;
+menu.innerHTML="";
+dishes.filter(d=>category==="All dishes ♡"||d[1]===category).forEach(d=>{
+let card=document.createElement("article");card.className="card";
+let photo=document.createElement("div");photo.className="photo";photo.textContent=d[2];
+let name=document.createElement("div");name.className="name";name.textContent=d[0];
+let price=document.createElement("div");price.className="price";price.textContent="Price: "+d[3];
+let b=document.createElement("button");b.className="choose"+(selected.has(d[0])?" selected":"");b.textContent=selected.has(d[0])?"✓ Selected ♡":"Choose ♡";
+b.onclick=()=>{selected.has(d[0])?selected.delete(d[0]):selected.add(d[0]);render()};
+card.append(photo,name,price,b);menu.append(card)
+});
+let items=document.querySelector("#items");items.innerHTML="";
+if(!selected.size)items.textContent="Choose your favorite dishes above!";
+else{selected.forEach(n=>{let p=document.createElement("p");p.textContent="♡ "+n;items.append(p)});let total=document.createElement("b");total.textContent="Total dishes: "+selected.size;items.append(total)}
+}
+document.querySelector("#send").onclick=()=>{
+document.querySelector("#message").textContent=selected.size?
+"Order preview ready ♡\n"+[...selected].join(", ")+"\n\nTelegram connection will be added next!":
+"Choose at least one dish first, darling ♡";
+};
+render();
+</script>
+</body>
+</html>
