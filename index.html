@@ -215,9 +215,13 @@ selected.clear();
 render();
 }catch(error){
 message.textContent="Oops! The order could not be sent. Please try again, darling ♡";
-}finally{
-button.disabled=false;
-button
+} finally {
+  button.disabled = false;
+  button.textContent = "Send to Wife ❤️";
+}
+};
+
+render();
 </script>
 </body>
 </html>
