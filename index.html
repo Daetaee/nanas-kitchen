@@ -87,15 +87,23 @@ menu.innerHTML="";
 dishes.filter(d=>category==="All dishes ♡"||d[1]===category).forEach(d=>{
 let card=document.createElement("article");card.className="card";
 let photo;
-if(d[0]==="Japanese Chicken Curry"){
-  photo=document.createElement("img");
-  photo.src="./Japanese-katsu-curry.webp";
-  photo.alt=d[0];
-  photo.className="photo";
-}else{
-  photo=document.createElement("div");
-  photo.className="photo";
-  photo.textContent=d[2];
+const photoFiles = {
+  "Japanese Chicken Curry": "Japanese-katsu-curry.webp",
+  "Hot Pot": "Hot-Pot.jfif",
+  "Fried Rice": "Fried-Rice.jfif",
+  "Stir-Fried Noodles": "Stir-Fried-Noodles.jfif",
+  "Ramen": "Ramen.jfif"
+};
+
+if (photoFiles[d[0]]) {
+  photo = document.createElement("img");
+  photo.src = "./" + photoFiles[d[0]];
+  photo.alt = d[0];
+  photo.className = "photo";
+} else {
+  photo = document.createElement("div");
+  photo.className = "photo";
+  photo.textContent = d[2];
 }
 let name=document.createElement("div");name.className="name";name.textContent=d[0];
 let price=document.createElement("div");price.className="price";price.textContent="Price: "+d[3];
