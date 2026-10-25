@@ -97,13 +97,29 @@ const photoFiles = {
   "Braised Chicken with Potatoes": "Braised-Chicken-Potatoes.jpg",
   "Chicken with Mushrooms": "Chicken-with-Mushrooms.jpg",
   "Beef with Bell Peppers": "Beef-with-Black-Pepper.jpg",
-  "Homemade Cutlets": "Homemade-Cutlets.jfif"
+  "Homemade Cutlets": "Homemade-Cutlets.jfif",
   "Cola-Glazed Chicken Wings": "Cola-Glazed-Chicken-Wings.jpg",
   "KFC-Style Chicken Wings": "KFC-Style-Chicken-Wings.jpg",
   "Chicken Nuggets": "Chicken-Nuggets.jpg",
   "Burgers": "Burgers.jpg",
   "Belyash (Fried Meat Pie)": "Belyash.jpg"
 };
+
+let photo;
+
+if (photoFiles[d[0]]) {
+  photo = document.createElement("img");
+  photo.src = "./" + photoFiles[d[0]];
+  photo.alt = d[0];
+  photo.className = "photo";
+  photo.onerror = function () {
+    this.style.display = "none";
+  };
+} else {
+  photo = document.createElement("div");
+  photo.className = "photo";
+  photo.textContent = d[2];
+}
 
 if (photoFiles[d[0]]) {
   photo = document.createElement("img");
