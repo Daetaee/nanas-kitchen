@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,9 +6,7 @@
 <title>Nana's Kitchen ♡</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -22,7 +19,7 @@ header {
   text-align: center;
   padding: 45px 12px;
   background-image:
-    linear-gradient(rgba(40, 20, 30, 0.35), rgba(40, 20, 30, 0.35)),
+    linear-gradient(rgba(40,20,30,.35), rgba(40,20,30,.35)),
     url("./%D0%BA%D0%BE%D1%82.jfif");
   background-size: cover;
   background-position: center;
@@ -33,16 +30,15 @@ header {
 h1 {
   font-family: Georgia, serif;
   color: white;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 2px 6px rgba(0,0,0,.6);
 }
 
-header p,
-header strong {
-  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8);
+header p, header strong {
+  text-shadow: 0 1px 5px rgba(0,0,0,.8);
 }
 
 main {
-  max-width: 800px;
+  max-width: 900px;
   margin: auto;
   padding: 16px;
 }
@@ -59,19 +55,18 @@ button {
   border: 1px solid #dcb2cc;
   border-radius: 12px;
   padding: 10px;
-  background: #fff;
+  background: white;
   color: #94577d;
+  font-size: 14px;
 }
 
-button.active,
-.choose.selected,
-#send {
+button.active, .choose.selected, #send {
   background: #a2527f;
   color: white;
 }
 
 button:disabled {
-  opacity: 0.7;
+  opacity: .7;
   cursor: wait;
 }
 
@@ -91,24 +86,21 @@ button:disabled {
 }
 
 .photo {
-  font-size: 42px;
+  width: 100%;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 46px;
   text-align: center;
   background: #f9e8f1;
   border-radius: 12px;
-  padding: 14px;
-}
-
-img.photo {
-  width: 100%;
-  height: 150px;
   object-fit: cover;
-  padding: 0;
-  display: block;
-  border-radius: 12px;
 }
 
 .name {
   font-weight: bold;
+  line-height: 1.4;
   margin: 10px 0;
 }
 
@@ -118,9 +110,7 @@ img.photo {
   margin-bottom: 10px;
 }
 
-.choose {
-  width: 100%;
-}
+.choose { width: 100%; }
 
 #order {
   background: white;
@@ -137,20 +127,13 @@ img.photo {
 
 #message {
   overflow-wrap: anywhere;
+  line-height: 1.5;
 }
 
 @media (max-width: 380px) {
-  #menu {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .card {
-    padding: 8px;
-  }
-
-  img.photo {
-    height: 120px;
-  }
+  #menu { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .card { padding: 8px; }
+  .photo { height: 120px; }
 }
 </style>
 </head>
@@ -164,9 +147,7 @@ img.photo {
 
 <main>
   <nav id="filters"></nav>
-
-  <h2 id="heading">All the good stuff ♡</h2>
-
+  <h2 id="heading">All dishes ♡</h2>
   <section id="menu"></section>
 
   <section id="order">
@@ -178,6 +159,7 @@ img.photo {
 </main>
 
 <script>
+"use strict";
 
 const dishes = [
   ["Japanese Chicken Curry", "Asian Favorites", "🍛", "2 kisses 💋"],
@@ -187,7 +169,6 @@ const dishes = [
   ["Hot Pot", "Asian Favorites", "🍲", "Cook together ❤️"],
   ["Lagman", "Asian Favorites", "🍜", "3 kisses 💋💋💋"],
   ["Shaanxi-Style Ma Shi Stew", "Asian Favorites", "🍲", "Cook together ❤️"],
-  ["Japanese Ginger Pork", "Chicken & Meat", "🥩", "2 kisses 💋💋"],
 
   ["Braised Chicken with Potatoes", "Chicken & Meat", "🍗", "2 kisses 💋💋"],
   ["Chicken with Mushrooms", "Chicken & Meat", "🍄", "1 big hug 🤗"],
@@ -200,6 +181,8 @@ const dishes = [
   ["Belyash (Fried Meat Pie)", "Chicken & Meat", "🥟", "1 big hug 🤗"],
   ["Chicken with Pineapple", "Chicken & Meat", "🍍🍗", "2 kisses 💋💋"],
   ["Juicy Garlic Chicken Drumsticks", "Chicken & Meat", "🍗", "3 kisses 💋💋💋"],
+  ["Japanese Ginger Pork", "Chicken & Meat", "🥩", "2 kisses 💋💋"],
+  ["Shredded Potato and Pork Stir-Fry", "Chicken & Meat", "🥔🥩", "2 kisses 💋💋"],
 
   ["Pan-Fried Fish Fillet", "Seafood & Dumplings", "🐟", "2 kisses 💋💋"],
   ["Chicken Dumplings", "Seafood & Dumplings", "🥟", "1 kiss 💋"],
@@ -220,12 +203,10 @@ const dishes = [
   ["Blanched Choy Sum", "Vegetables & Salads", "🥬", "1 warm hug 🤗"],
   ["Braised Potato Slices", "Vegetables & Salads", "🥔", "1 kiss 💋"],
   ["Tomato and Scrambled Eggs", "Vegetables & Salads", "🍅🍳", "1 big hug 🤗"],
-  ["Shredded Potato and Pork Stir-Fry", "Chicken & Meat", "🥔🥩", "2 kisses 💋💋"],
 
   ["Steamed Rice", "Sides & Bread", "🍚", "Free with love ♡"],
   ["Bread", "Sides & Bread", "🍞", "Free with love ♡"]
 ];
-
 
 const photoFiles = {
   "Japanese Chicken Curry": "Japanese-katsu-curry.webp",
@@ -268,118 +249,114 @@ const categories = [
   ...new Set(dishes.map(dish => dish[1]))
 ];
 
-const filters = document.querySelector("#filters");
-const menu = document.querySelector("#menu");
-const items = document.querySelector("#items");
-const message = document.querySelector("#message");
-const sendButton = document.querySelector("#send");
+const filters = document.getElementById("filters");
+const menu = document.getElementById("menu");
+const items = document.getElementById("items");
+const message = document.getElementById("message");
+const sendButton = document.getElementById("send");
+
+function createPhoto(name, emoji) {
+  const fallback = document.createElement("div");
+  fallback.className = "photo";
+  fallback.textContent = emoji;
+  fallback.setAttribute("role", "img");
+  fallback.setAttribute("aria-label", name);
+
+  if (!photoFiles[name]) return fallback;
+
+  const img = document.createElement("img");
+  img.className = "photo";
+  img.src = "./" + encodeURIComponent(photoFiles[name]);
+  img.alt = name;
+  img.loading = "lazy";
+  img.onerror = () => img.replaceWith(fallback);
+
+  return img;
+}
 
 function render() {
-  filters.innerHTML = "";
+  filters.replaceChildren();
 
   categories.forEach(c => {
-    const filterButton = document.createElement("button");
-    filterButton.textContent = c;
-    filterButton.className = c === category ? "active" : "";
+    const button = document.createElement("button");
+    button.textContent = c;
+    button.className = c === category ? "active" : "";
+    button.setAttribute("aria-pressed", String(c === category));
 
-    filterButton.onclick = () => {
+    button.addEventListener("click", () => {
       category = c;
       render();
-    };
-
-    filters.append(filterButton);
-  });
-
-  document.querySelector("#heading").textContent = category;
-  menu.innerHTML = "";
-
-  dishes
-    .filter(dish => category === "All dishes ♡" || dish[1] === category)
-    .forEach(dish => {
-      const [nameText, dishCategory, emoji, priceText] = dish;
-
-      const card = document.createElement("article");
-      card.className = "card";
-
-      let photo;
-
-      if (photoFiles[nameText]) {
-        photo = document.createElement("img");
-        photo.src = "./" + photoFiles[nameText];
-        photo.alt = nameText;
-        photo.className = "photo";
-        photo.loading = "lazy";
-
-        photo.onerror = function() {
-          const fallback = document.createElement("div");
-          fallback.className = "photo";
-          fallback.textContent = emoji;
-          fallback.setAttribute("role", "img");
-          fallback.setAttribute("aria-label", nameText);
-          this.replaceWith(fallback);
-        };
-      } else {
-        photo = document.createElement("div");
-        photo.className = "photo";
-        photo.textContent = emoji;
-        photo.setAttribute("role", "img");
-        photo.setAttribute("aria-label", nameText);
-      }
-
-      const name = document.createElement("div");
-      name.className = "name";
-      name.textContent = nameText;
-
-      const price = document.createElement("div");
-      price.className = "price";
-      price.textContent = "Price: " + priceText;
-
-      const chooseButton = document.createElement("button");
-      chooseButton.className =
-        "choose" + (selected.has(nameText) ? " selected" : "");
-
-      chooseButton.textContent = selected.has(nameText)
-        ? "✓ Selected ♡"
-        : "Choose ♡";
-
-      chooseButton.setAttribute(
-        "aria-pressed",
-        selected.has(nameText) ? "true" : "false"
-      );
-
-      chooseButton.onclick = () => {
-        if (selected.has(nameText)) {
-          selected.delete(nameText);
-        } else {
-          selected.add(nameText);
-        }
-
-        message.textContent = "";
-        render();
-      };
-
-      card.append(photo, name, price, chooseButton);
-      menu.append(card);
     });
 
-  items.innerHTML = "";
+    filters.appendChild(button);
+  });
+
+  document.getElementById("heading").textContent = category;
+  menu.replaceChildren();
+
+  const visibleDishes = dishes.filter(
+    dish => category === "All dishes ♡" || dish[1] === category
+  );
+
+  visibleDishes.forEach(([nameText, dishCategory, emoji, priceText]) => {
+    const card = document.createElement("article");
+    card.className = "card";
+
+    const name = document.createElement("div");
+    name.className = "name";
+    name.textContent = nameText;
+
+    const price = document.createElement("div");
+    price.className = "price";
+    price.textContent = "Price: " + priceText;
+
+    const chooseButton = document.createElement("button");
+    const isSelected = selected.has(nameText);
+
+    chooseButton.className = "choose" + (isSelected ? " selected" : "");
+    chooseButton.textContent = isSelected ? "✓ Selected ♡" : "Choose ♡";
+    chooseButton.setAttribute("aria-pressed", String(isSelected));
+
+    chooseButton.addEventListener("click", () => {
+      if (selected.has(nameText)) {
+        selected.delete(nameText);
+      } else {
+        selected.add(nameText);
+      }
+
+      message.textContent = "";
+      render();
+    });
+
+    card.append(
+      createPhoto(nameText, emoji),
+      name,
+      price,
+      chooseButton
+    );
+
+    menu.appendChild(card);
+  });
+
+  items.replaceChildren();
 
   if (selected.size === 0) {
     items.textContent = "Choose your favorite dishes above!";
-  } else {
-    selected.forEach(name => {
-      const p = document.createElement("p");
-      p.textContent = "♡ " + name;
-      items.append(p);
-    });
-
-    const total = document.createElement("b");
-    total.textContent = "Total dishes: " + selected.size;
-    items.append(total);
+    return;
   }
+
+  selected.forEach(name => {
+    const p = document.createElement("p");
+    p.textContent = "♡ " + name;
+    items.appendChild(p);
+  });
+
+  const total = document.createElement("b");
+  total.textContent = "Total dishes: " + selected.size;
+  items.appendChild(total);
 }
 
-sendButton.onclick = async () => {
+sendButton.addEventListener("click", async () => {
   if (selected.size === 0) {
     message.textContent = "Choose at least one dish first, darling ♡";
     return;
@@ -394,18 +371,20 @@ sendButton.onclick = async () => {
       "https://nanas-kitchen-orders.daetaee4.workers.dev/",
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          items: [...selected]
-        })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: [...selected] })
       }
     );
 
-    const result = await response.json();
+    let result;
 
-    if (!response.ok || !result.ok) {
+    try {
+      result = await response.json();
+    } catch {
+      throw new Error("Invalid server response");
+    }
+
+    if (!response.ok || !result || !result.ok) {
       throw new Error("Order delivery failed");
     }
 
@@ -418,15 +397,13 @@ sendButton.onclick = async () => {
   } catch (error) {
     message.textContent =
       "Oops! The order could not be sent. Please try again, darling ♡";
-
   } finally {
     sendButton.disabled = false;
     sendButton.textContent = "Send to Wife ❤️";
   }
-};
+});
 
 render();
 </script>
 </body>
 </html>
-```
